@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.mapper.ReviewMapper">
+
+	<!-- 리뷰 등록 -->
+	<insert id="insert">
+		insert into review (rno, bno, id, rcontent, score)
+		values (seq_review.nextval, #{bno}, #{id}, #{rcontent}, #{score})
+	</insert>
+
+
+	<select id="read" resultType="org.zerock.domain.ReviewVO">
+		select * from review where rno = #{rno}
+	</select>
+
+	
+	<!-- <delete id="delete" >
+		delete from review where rno = #{rno}
+	</delete> -->
+
+	<!--  리뷰 불러오기+페이징 -->
+	<select id="getListWithPaging" resultType="org.zerock.domain.ReviewVO"> <!-- resultType: 조회 결과를 담아서 넘겨줌  -->
+	<![CDATA[
+	select 
+        rno, bno, id, rcontent, score, replydate
+		  from 
+		      (
+		      select /*+INDEX_DESC(review idx_review) */
+		        rownum rn, rno, bno, id, rcontent, score, replydate
+		      from review
+		      where bno = #{bno}
+		      and rno > 0
+		      and rownum <= #{cri.pageNum} * #{cri.amount}
+              )
+              where rn > (#{cri.pageNum} -1) * #{cri.amount}
+	       ]]>
+	</select>
+
+	<!--전체 리뷰 데이터 개수 처리 -->
+     <select id="getCountByBno" resultType="int">
+      <![CDATA[
+      SELECT COUNT(RNO) FROM REVIEW WHERE BNO = #{BNO}
+      ]]>
+     </select>
+
+	<!-- 리뷰 권한 -->
+	<select id ="reviewRight" resultType ="org.zerock.domain.PostingVO">
+		select a.bno, a.id, a.applystatus
+		from posting p inner join application a
+		on a.bno = p.bno 
+		where a.applystatus = 1
+	</select>
+	
+	<!-- 리뷰 평점 -->
+	<!-- <select id ="reviewAvg" resultType ="org.zerock.domain.ReviewVO">
+		<![CDATA[
+		select trunc(avg(score),1) from review
+		where bno = #{bno};
+		]]>
+	</select> -->
+	
+</mapper>
+

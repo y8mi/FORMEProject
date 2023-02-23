@@ -1,0 +1,19 @@
+@charset "UTF-8";
+
+/*풋터*/
+  .h-footer bg-light{
+  width:100%;
+  }
+
+  .h-footer footer {
+    padding-top: 5rem;
+    padding-bottom: 3.5rem;
+    background-color: snow;
+  }
+  .h-footer a:link {
+    color : black ;
+  }
+  .h-footer a:hover {
+    color : gray ;
+  }
+  

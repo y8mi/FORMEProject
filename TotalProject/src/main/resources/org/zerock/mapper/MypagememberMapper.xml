@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.mapper.MypagememberMapper">
+	
+	<!-- 전문가 마이페이지 -->
+	<select id="sellermypage" resultType="org.zerock.domain.PostingVO">
+		<![CDATA[
+			select  bno, id, categoryno, title, startdate, enddate, starttime, postright, price, con1, con2, con3, con4, classtime, uuid, uploadpath, filename
+			from (
+			      select 
+			          rownum as rn, a.bno, a.id, a.categoryno, a.title, a.startdate, a.enddate, a.starttime, a.postright, a.price, a.con1, a.con2, a.con3, a.con4, a.classtime, b.uuid, b.uploadpath, b.filename 
+			        from 
+			          posting a, (select * from (select row_number() over(partition by bno order by bno) as rnum, bno, uuid, uploadpath, filename from upload) where rnum = 1) b 
+			       where 1=1
+			         and a.bno = b.bno(+)
+			         and a.id = #{id}
+			         and a.bno > 0 
+			         and rownum > 0
+			         and postright = 1
+			         and sysdate >= startdate
+			         and sysdate <= enddate
+			        order by a.postdate desc
+			      )
+			where 1=1
+		]]>
+	</select> 
+	
+	<!-- 게시물 등록 여부 -->
+	<select id="sellerpostingcheck" resultType="org.zerock.domain.PostingVO">
+			select  bno, id, categoryno, title, startdate, enddate, starttime, postright, price, con1, con2, con3, con4, classtime, uuid, uploadpath, filename
+			from (
+			      select 
+			          rownum as rn, a.bno, a.id, a.categoryno, a.title, a.startdate, a.enddate, a.starttime, a.postright, a.price, a.con1, a.con2, a.con3, a.con4, a.classtime, b.uuid, b.uploadpath, b.filename 
+			        from 
+			          posting a, (select * from (select row_number() over(partition by bno order by bno) as rnum, bno, uuid, uploadpath, filename from upload) where rnum = 1) b 
+			       where 1=1
+			         and a.bno = b.bno(+)
+			         and a.id = #{id}
+			         and a.bno > 0 
+			         and rownum > 0
+			        order by a.postdate desc
+			      )
+			where 1=1
+	</select> 
+	
+	<!-- 의뢰인 마이페이지 -->
+   <select id="buyermypage" resultType="org.zerock.domain.PostingVO">
+   <![CDATA[
+      select DISTINCT bno, id, categoryno, title, startdate, enddate, starttime, postright, price, con1, con2, con3, con4, classtime, uuid, uploadpath, filename, applystatus
+      from (
+            select 
+                rownum as rn, a.bno, a.id, a.categoryno, a.title, a.startdate, a.enddate, a.starttime, a.postright, a.price, a.con1, a.con2, a.con3, a.con4, a.classtime, b.uuid, b.uploadpath, b.filename, c.applystatus 
+              from 
+                posting a, (select * from (select row_number() over(partition by bno order by bno) as rnum, bno, uuid, uploadpath, filename from upload) where rnum = 1) b, 
+                  application c
+             where 1=1
+               and a.bno = b.bno(+)
+               and a.bno = c.bno(+)
+               and a.bno > 0 
+               and rownum > 0
+               and sysdate <= enddate
+               and a.bno in (select bno
+                        from application
+                        where c.id = #{id}
+                        )
+              order by a.postdate desc
+            )
+      where 1=1
+      ]]>
+   </select> 
+	
+	<!-- 의뢰인 위시리스트 -->
+	<select id="wishlist" resultType="org.zerock.domain.PostingVO">
+		select  bno, id, categoryno, title, startdate, enddate, starttime, postright, price, con1, con2, con3, con4, classtime, uuid, uploadpath, filename
+		from (
+		      select 
+		          rownum as rn, a.bno, a.id, a.categoryno, a.title, a.startdate, a.enddate, a.starttime, a.postright, a.price, a.con1, a.con2, a.con3, a.con4, a.classtime, b.uuid, b.uploadpath, b.filename 
+		        from 
+		          posting a, (select * from (select row_number() over(partition by bno order by bno) as rnum, bno, uuid, uploadpath, filename from upload) where rnum = 1) b 
+		       where 1=1
+		         and a.bno = b.bno(+)
+		         and a.bno > 0 
+		         and rownum > 0
+		         and a.bno in (select wish from cart where id = #{id})
+		        order by a.postdate desc
+		      )
+		where 1=1
+	</select> 
+	
+	<!-- 회원탈퇴 -->
+	<delete id="memberdelete">
+		delete 
+   		from member
+   		where id = #{id} and password = #{password}
+	</delete>
+	
+	<!-- 회원 정보수정 -->
+	<update id="memberupdate">
+		update member
+		set id = #{id},
+		password =#{password},
+		name = #{name},
+		right = #{right},
+		email = #{email},
+		phone = #{phone}f
+	</update>
+	
+	<!-- 비밀번호 변경 -->
+	<update id="passwordupdate">
+		update member
+		set id = #{id},
+		password =#{password}
+		where id = #{id}
+	</update>
+	
+	
+	<!-- memberright 0(의뢰인)으로 변경 -->
+	<update id="memberright0">
+		update member
+		set id = #{id},
+		right = 0
+		where id = #{id}
+	</update>
+	
+	<!-- memberright 1(전문가)로 변경 -->
+	<update id="memberright1">
+		update member
+		set id = #{id},
+		right = 1
+		where id = #{id}
+	</update>
+	
+	<!-- 전문가 수락 페이지 (sellerbuyercheck) -->
+	<select id="sellerbuyercheck" resultType="org.zerock.domain.ApplicationVO">
+		select distinct bno, id, applystatus, title from application
+		where bno in (select bno
+		            from posting
+		            where id = #{id})
+		and applystatus = 0
+	</select>
+	
+	<!-- 수락 페이지 수락쿼리 -->
+	<update id="buyergrant">
+		update application
+		set applystatus = 1
+		where bno = #{bno}
+        and id = #{id}
+	</update>
+	
+	<!-- 수락 페이지 거절쿼리 -->
+	<delete id="buyercancel">
+		delete from application
+		where bno = #{bno}
+        and id = #{id}
+        and applystatus = 0
+	</delete>
+	
+	<!-- 마이페이지 위치맞춰들가기 -->
+   	<!-- <select id="loginid" resultType="org.zerock.domain.MemberVO">	
+			select id,right from member where id = #{id}
+   	</select> -->
+   	
+   	<select id="loginid" resultType="org.zerock.domain.MemberVO">	
+			select * from member where id = #{id}
+   	</select>
+	
+	<!-- 어플리케이션 가져오기 -->
+	<select resultType="org.zerock.domain.ApplicationVO" id="getApplication">
+		select * from application where id = #{id} 
+	</select>
+	
+	<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  문의 사항 게시판  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+	
+	
+	
+		<!-- CS 목록 게시판 (페이징 처리) -->
+	<select id="getcsList"  resultType="org.zerock.domain.CsVO" >
+		  <![CDATA[
+			select 
+		    	 csbno, title, postbno, content, csdate, csid 
+		      from 
+		      (
+		      select /*+INDEX_DESC(posting pk_posting) */
+		          rownum rn, csbno, title,  postbno, content, csdate, csid
+		        from 
+		          cs_board
+		       where 
+		       ]]> 
+		       
+		       <trim prefix="(" suffix=") AND " prefixOverrides="OR">
+				<foreach item='type' collection="typeArr">
+					<trim prefix="OR">
+						<choose>
+							<when test="type == 'T'.toString()">
+								title like '%'||#{keyword}||'%'
+							</when>
+							<when test="type == 'C'.toString()">
+								content like '%'||#{keyword}||'%' 
+							</when>
+							<when test="type == 'W'.toString()">
+								csid like '%'||#{keyword}||'%'
+							</when>
+						</choose>
+					</trim>
+				</foreach>
+			</trim>
+		       
+		       <![CDATA[
+		       rownum <= #{pageNum} * #{amount} 
+              ) 
+             where rn > (#{pageNum} -1) * #{amount} 
+		   ]]>
+	</select>
+	
+	<!-- CS 목록 게시판 검색 토탈 -->
+	<select id="getCsTotal" resultType="int">
+		<![CDATA[
+		select count(*) from cs_board where 
+		]]>
+			<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+				<foreach item='type' collection="typeArr">
+					<trim prefix="OR">
+						<choose>
+							<when test="type == 'T'.toString()">
+								title like '%'||#{keyword}||'%'
+							</when>
+							<when test="type == 'C'.toString()">
+								content like '%'||#{keyword}||'%' 
+							</when>
+							<when test="type == 'W'.toString()">
+								csid like '%'||#{keyword}||'%'
+							</when>
+						</choose>
+					</trim>
+				</foreach>
+			</trim>
+	      
+	  <![CDATA[    
+	      csbno > 0
+	  ]]>	
+	</select>
+	
+	<!-- buymypage id파라메터로 리스트 끌고오기 -->
+	<select id="getcs" resultType="org.zerock.domain.CsVO">
+		select *
+		from cs_board
+		where csid = #{id}
+	</select>
+	
+	
+	
+	<!-- 고객문의 상세페이지 -->
+	<select id="csdetail" resultType="org.zerock.domain.CsVO">
+		select *
+		from cs_board
+		where csbno = #{bno}
+	</select>
+	
+	<!-- 고객문의 등록 -->
+ 	<!-- <insert id="csregister">
+		insert cs_board
+		set title = #{title},
+		csbno = seq_csbno.nextval,
+		csdate = sysdate,
+		content = #{content},
+		postbno = #{postbno}
+		where csid = #{id}
+	</insert>  -->
+	
+	<insert id="csregister">
+		insert into cs_board (title, csbno, csdate, content, postbno, csid)
+		values (#{title}, seq_csbno.nextval, sysdate, #{content}, #{postbno}, #{csid})
+	</insert>
+	
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

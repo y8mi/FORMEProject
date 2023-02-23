@@ -1,0 +1,922 @@
+@charset "UTF-8";
+    /* 웹폰트 */    
+	@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap');
+
+	html {
+	  scroll-behavior: smooth;
+	}
+    body{
+        font-family: "Noto Sans KR", sans-serif;
+        font-size: large;
+    }
+    pre{
+        font-family: "Noto Sans KR", sans-serif;
+        font-size: large;
+        border : none;
+        font-weight : bold;
+    }
+
+	h4{
+		font-size : 20px;
+		font-weight : bold;
+	}
+	#map{
+		align : center;
+	}
+    .container{
+        width: 100vw;
+    }
+    
+    /*navbar고정*/
+    #navbar-example2{
+        width : 100%;
+        top : 0;
+		position:sticky;
+		
+    }
+
+
+    /*navbar스타일 */
+    .navbar{
+       /* background-color: rgb(47, 153, 244) !important; */
+       background-color:white!important;
+        border-radius: 5px;
+    }
+
+    .nav-link{
+        color : black;
+        margin: auto;
+    }
+
+    .nav-link:hover{
+        color : rgb(238, 197, 197);
+    }
+    
+    .nav-item{
+        padding: 0px 20px;
+    }
+
+    .nav-link{
+        font-size: 16px;
+    }
+
+    /*navbar 밑줄 */
+    .nav nav-pills {display: block; margin-bottom: 50px;}
+    .nav-item {
+        position: relative; 
+        display: inline-block; 
+        height: 40px; 
+        text-align: center; 
+        line-height: 30px; 
+        }
+
+    #fromInsideOut li::after {
+        position: absolute; 
+        content:""; 
+        display: block; 
+        border-bottom: 3px solid rgb(47, 153, 244); 
+        transition: all 250ms ease-out; 
+        left: 50%; 
+        width: 0;}
+
+    #fromInsideOut li:hover::after {
+        transition: all 250ms ease-out; 
+        left: 0%; 
+        width: 100%;}
+    
+    /*나비바 스크롤.. 효과는 위에 밑줄과 같게.
+    .navbar-example2.active{
+        color : yellow;
+        background-color: red;
+
+    }
+    */
+    
+    h4{
+        background-color: lemonchiffon;
+        display: inline;
+
+    }
+    
+    .ontop {
+    position: fixed;
+    bottom: 20px;
+    right: 300px;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    border : none;
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    /*속성확인 필요*/
+    box-sizing: border-box;
+    font: inherit;
+
+    }    
+      .su_form{
+      	font-weight : bold;
+      }
+      .summary{
+      	float : left;
+      	padding : 0px 30px;
+      }  
+       
+     li{
+        list-style: none;
+        line-height: 40px;
+    }
+
+    /* 수강신청창 */
+    .col-md-4{
+    	height: 300vw;
+    }
+    .application{
+        border: solid 1px gainsboro;
+        height : 600px;
+        top : 40px;
+ 		position :sticky;
+        border-radius: 10px;
+        box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
+        
+    }
+    
+    hr{
+	    background:grey;
+	    height:1px;
+	    border:0;
+	    width : 85%;
+	    margin-left : 10px;
+    }
+
+    .time{
+        list-style-type: none; 
+        padding-right : 100px;
+        float : left;
+    }
+    
+    .time2{
+    	font-size : 21px;
+    	font-weight : bold;
+    }
+    .date{
+        list-style-type: none; 
+        padding-right : 100px;
+        font-weight : bold;
+        align-text : center;
+        padding : 0 50px 0 50px;
+    }
+
+    #startDate{
+        height: 30px;
+    }
+
+    /*캐러셀 이미지*/
+	.lg-slider{
+		margin : 0;
+		padding : 0;
+		height : 440px;
+		display : flex;
+		justify-content : center;
+		align-items : centr;
+	}
+
+	.slider{
+		margin-top : 40px;
+		width : 560px;
+		height : 350px;
+		border-radius : 10px;
+		overflow : hidden;
+	}
+	
+	.slides{
+		width: 500%;
+		hegight : 350px;
+		display : flex;		
+	}
+	
+	.slides input{
+		display :none;
+	}
+	
+	.slide{
+		width : 20%;
+		transition: 2s;
+	}
+	
+	.slide img{
+		width : 560px;
+		height : 350px;
+	}
+	
+	/*css for manual slide navigation*/
+	
+	.navigation-manual{
+		position : absolute;
+		width : 560px;
+		margin-top : -40px;
+		display : flex;
+		justify-content : center;
+	}
+	
+	.manual-btn{
+		border : 2px solid rgb(47, 153, 244);
+		padding : 5px;
+		margin: 400px 10px;
+		border-radius : 10px;
+		cursor : pointer;
+		transition : 1s;
+	}
+	
+	.manual-btn:not(:last-chile){
+		margin-right : 40px;
+	}
+	
+	.manual-btn:hover{
+		background-color : #007aff;
+	}
+	
+	#radio1:checked ~ .first{
+		margin-left : 0;
+	}
+	
+	#radio2:checked ~ .first{
+		margin-left : -20%;
+	}
+	
+	#radio3:checked ~ .first{
+		margin-left : -40%;
+	}
+	
+	/*css for automatic */
+	.navigation-auto{
+		position : absolute;
+		display : flex;
+		width : 560px;
+		justify-content : center;
+		margin-top : 360px;
+	}
+	
+	.navigation-auto div{
+		border : 2px solid rgb(47, 153, 244);
+		padding : 5px;
+		border-radius : 10px;
+		transition : 1s;
+	}
+	
+	
+	.navigation-auto div:not(:last-child){
+		margin-right : 20px;
+	}
+	
+	#radio1:checked ~ .navigation-auto .auto-btn1{
+		background : #007aff;
+	}
+	
+	#radio2:checked ~ .navigation-auto .auto-btn2{
+		background : #007aff;
+	}
+	
+	#radio3:checked ~ .navigation-auto .auto-btn3{
+		background : #007aff;
+	}
+	
+    /*수강 신청 창 div줄 간격 > 안됨*/
+    .app_menu{
+        line-height: 20px;
+    }
+    
+    
+
+    .title{
+        font-size: 23px;
+        font-weight: bold;
+    }
+
+    .name {
+        font-size : 16px;
+    }
+
+    .price{
+        float: right;
+        margin: 0px 50px; 
+        font-size: 25px;
+        font-weight: bold;
+    }
+
+    /* 버튼 스타일 */
+    
+    .btns{
+    	line-height: 40px;
+    	 text-align:center;
+    	}
+    	
+    .btn{
+        margin: 0 auto;
+        width: 320px;
+        height : 70px;
+        border-radius: 10px;
+    }
+    .btn-1{
+        background-color: white;
+        border: 2px solid white;
+        box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
+    }
+    .btn-1:hover{
+        background-color:rgba(0, 0, 0, 0.13) ;
+        border: none;
+        transition-duration: 0.5s;
+    }
+
+
+    .sub_1{
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .btn-2{
+        background-color:rgb(47, 153, 244);
+        border: 2px solid rgb(47, 153, 244);
+        box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-2:hover{
+        background-color:#007aff ;
+        border: none;
+        transition-duration: 0.5s;
+    }
+
+    .sub_2{
+        font-size: 20px;
+        font-weight: bold;
+        color: white;
+    }
+    
+    .heart{
+        box-sizing: border-box;
+        margin: 0 0 0 10px;
+        padding: 0px;
+        font: inherit;
+        border: 0px none;
+        vertical-align: middle;
+        position: relative;
+        height: 21px;
+        margin-bottom: 3px;
+        width: 24px;
+    }
+
+  
+	/* 리뷰 입력부분 */
+
+    textarea.autosize{
+       min-height: 100px; 
+       width : 80%;
+       padding: 10px;
+       margin : 10px;
+       overflow:auto;
+       border : 2px solid gainsboro;
+       outline-color: rgb(47, 153, 244);
+       border-radius: 5px;
+       resize: none;
+       font-size: 15px;
+       }
+	
+	
+	/* 별점 입력 */
+	
+	#reviewregister fieldset{
+    display: inline-block;
+    direction: rtl;
+    border:0;
+}
+#reviewregister fieldset legend{
+    text-align: right;
+}
+#reviewregister input[type=radio]{
+    display: none;
+}
+#reviewregister label{
+    font-size: 20px;
+    color: transparent;
+    text-shadow: 0 0 0 #f0f0f0;
+}
+#reviewregister label:hover{
+    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+}
+#reviewregister label:hover ~ label{
+    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+}
+#reviewregister input[type=radio]:checked ~ label{
+    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+}
+
+/* 리뷰쓰기 버튼 */
+  .reply_button_wrap{
+  	padding : 10px;
+  	width : 80%;
+  }
+
+  .reply_button_wrap > button{
+    float: right;
+  
+  }
+
+  .reply_button_wrap button{
+	background-color: rgb(238, 197, 197);
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+    padding: 5px 12px;
+    cursor: pointer;  
+  }
+  .reply_button_wrap button:hover{
+  	background-color: #1347e7;
+  }
+
+ /*==========모달 ========*/
+ 
+  #modal.modal-overlay {
+        width: 100%;
+        height: 100%;
+        position:fixed;
+        display: none;
+		top:50%; 
+		left:50%;
+		transform: translate(-50%,-50%);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.25);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(1.5px);
+        -webkit-backdrop-filter: blur(1.5px);
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+    #modal .modal-window {
+        background: rgba( 69, 139, 197, 0.70 );
+        box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+        backdrop-filter: blur( 13.5px );
+        -webkit-backdrop-filter: blur( 13.5px );
+        border-radius: 10px;
+        border: 1px solid rgba( 255, 255, 255, 0.18 );
+        width: 400px;
+        height: 200px;
+        position: relative;
+        top: -100px;
+        padding: 10px;
+    }
+    #modal .title {
+        padding-left: 10px;
+        display: inline;
+        text-shadow: 1px 1px 2px gray;
+        color: white;
+        
+    }
+    #modal .title h2 {
+        display: inline;
+    }
+    #modal .close-area {
+        display: inline;
+        float: right;
+        padding-right: 10px;
+        cursor: pointer;
+        text-shadow: 1px 1px 2px gray;
+        color: white;
+    }
+ 
+ /*모달 2번째*/
+  #class_modal.modal-overlay {
+        width: 100%;
+        height: 100%;
+        position:fixed;
+        display: none;
+		top:50%; 
+		left:50%;
+		transform: translate(-50%,-50%);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.25);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(1.5px);
+        -webkit-backdrop-filter: blur(1.5px);
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+    #class_modal .modal-window {
+        background: rgba( 69, 139, 197, 0.70 );
+        box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+        backdrop-filter: blur( 13.5px );
+        -webkit-backdrop-filter: blur( 13.5px );
+        border-radius: 10px;
+        border: 1px solid rgba( 255, 255, 255, 0.18 );
+        width: 400px;
+        height: 200px;
+        position: relative;
+        top: -100px;
+        padding: 10px;
+    }
+    #class_modal .title {
+        padding-left: 10px;
+        display: inline;
+        text-shadow: 1px 1px 2px gray;
+        color: white;
+        
+    }
+    #class_modal .title h2 {
+        display: inline;
+    }
+    #class_modal .close-area {
+        display: inline;
+        float: right;
+        padding-right: 10px;
+        cursor: pointer;
+        text-shadow: 1px 1px 2px gray;
+        color: white;
+    }
+	 
+	 .modal-foot{                     
+	  width:100%;
+	  height:50px;
+	}
+	.modal-btn{ 
+	  display:inline-flex;           
+	  width:50%;                    
+	  height:100%;                  
+	  justify-content:center;         
+	  align-items:center;           
+	  float:left;                  
+	  color:#ffffff;               
+	  cursor:pointer;                 
+	}
+	#modal_confirm{                 
+	  border-right:1px solid #3b5fbf; 
+	}
+	
+	
+/* 모달 3번째 (신청완료) */
+ 
+  #modal_apply.modal-overlay {
+        width: 100%;
+        height: 100%;
+        position:fixed;
+        display: none;
+		top:50%; 
+		left:50%;
+		transform: translate(-50%,-50%);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.25);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(1.5px);
+        -webkit-backdrop-filter: blur(1.5px);
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+    #modal_apply .modal-window {
+        background: rgba( 69, 139, 197, 0.70 );
+        box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+        backdrop-filter: blur( 13.5px );
+        -webkit-backdrop-filter: blur( 13.5px );
+        border-radius: 10px;
+        border: 1px solid rgba( 255, 255, 255, 0.18 );
+        width: 400px;
+        height: 200px;
+        position: relative;
+        top: -100px;
+        padding: 10px;
+    }
+    #modal_apply .title {
+        padding-left: 10px;
+        display: inline;
+        text-shadow: 1px 1px 2px gray;
+        color: white;
+        
+    }
+    #modal_apply .title h2 {
+        display: inline;
+    }
+    #modal_apply .close-area {
+        display: inline;
+        float: right;
+        padding-right: 10px;
+        cursor: pointer;
+        text-shadow: 1px 1px 2px gray;
+        color: white;
+    }
+ 
+ 
+ /* 모달 4번째 (위시추가) */
+ 
+  #modal_wish.modal-overlay {
+        width: 100%;
+        height: 100%;
+        position:fixed;
+        display: none;
+		top:50%; 
+		left:50%;
+		transform: translate(-50%,-50%);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.25);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(1.5px);
+        -webkit-backdrop-filter: blur(1.5px);
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+     #modal_wish .modal-window {
+        background: rgba( 69, 139, 197, 0.70 );
+        box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+        backdrop-filter: blur( 13.5px );
+        -webkit-backdrop-filter: blur( 13.5px );
+        border-radius: 10px;
+        border: 1px solid rgba( 255, 255, 255, 0.18 );
+        width: 400px;
+        height: 200px;
+        position: relative;
+        top: -100px;
+        padding: 10px;
+    }
+    #modal_wish .title {
+        padding-left: 10px;
+        display: inline;
+        text-shadow: 1px 1px 2px gray;
+        color: white;
+        
+    }
+    #modal_wish .title h2 {
+        display: inline;
+    }
+    #modal_wish .close-area {
+        display: inline;
+        float: right;
+        padding-right: 10px;
+        cursor: pointer;
+        text-shadow: 1px 1px 2px gray;
+        color: white;
+    }
+    
+    
+  /* 모달 5번째 (위시제거) */
+ 
+  #modal_wishremove.modal-overlay {
+        width: 100%;
+        height: 100%;
+        position:fixed;
+        display: none;
+		top:50%; 
+		left:50%;
+		transform: translate(-50%,-50%);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.25);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(1.5px);
+        -webkit-backdrop-filter: blur(1.5px);
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+     #modal_wishremove .modal-window {
+        background: rgba( 69, 139, 197, 0.70 );
+        box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+        backdrop-filter: blur( 13.5px );
+        -webkit-backdrop-filter: blur( 13.5px );
+        border-radius: 10px;
+        border: 1px solid rgba( 255, 255, 255, 0.18 );
+        width: 400px;
+        height: 200px;
+        position: relative;
+        top: -100px;
+        padding: 10px;
+    }
+    #modal_wishremove .title {
+        padding-left: 10px;
+        display: inline;
+        text-shadow: 1px 1px 2px gray;
+        color: white;
+        
+    }
+    #modal_wishremove .title h2 {
+        display: inline;
+    }
+    #modal_wishremove .close-area {
+        display: inline;
+        float: right;
+        padding-right: 10px;
+        cursor: pointer;
+        text-shadow: 1px 1px 2px gray;
+        color: white;
+    }
+    
+    
+      
+  /* 모달 6번째 (본인 클래스 신청 시) */
+ 
+  #modal_self.modal-overlay {
+        width: 100%;
+        height: 100%;
+        position:fixed;
+        display: none;
+		top:50%; 
+		left:50%;
+		transform: translate(-50%,-50%);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.25);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(1.5px);
+        -webkit-backdrop-filter: blur(1.5px);
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+    #modal_self .modal-window {
+        background: rgba( 69, 139, 197, 0.70 );
+        box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+        backdrop-filter: blur( 13.5px );
+        -webkit-backdrop-filter: blur( 13.5px );
+        border-radius: 10px;
+        border: 1px solid rgba( 255, 255, 255, 0.18 );
+        width: 400px;
+        height: 200px;
+        position: relative;
+        top: -100px;
+        padding: 10px;
+    }
+    #modal_self .title {
+        padding-left: 10px;
+        display: inline;
+        text-shadow: 1px 1px 2px gray;
+        color: white;
+        
+    }
+    #modal_self .title h2 {
+        display: inline;
+    }
+    #modal_self .close-area {
+        display: inline;
+        float: right;
+        padding-right: 10px;
+        cursor: pointer;
+        text-shadow: 1px 1px 2px gray;
+        color: white;
+    }
+    
+    
+/*모달 삭제 확인*/
+  #modal_removecheck.modal-overlay {
+        width: 100%;
+        height: 100%;
+        position:fixed;
+        display: none;
+		top:50%; 
+		left:50%;
+		transform: translate(-50%,-50%);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.25);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(1.5px);
+        -webkit-backdrop-filter: blur(1.5px);
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+    #modal_removecheck .modal-window {
+        background: rgba( 69, 139, 197, 0.70 );
+        box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+        backdrop-filter: blur( 13.5px );
+        -webkit-backdrop-filter: blur( 13.5px );
+        border-radius: 10px;
+        border: 1px solid rgba( 255, 255, 255, 0.18 );
+        width: 400px;
+        height: 200px;
+        position: relative;
+        top: -100px;
+        padding: 10px;
+    }
+    #modal_removecheck .title {
+        padding-left: 10px;
+        display: inline;
+        text-shadow: 1px 1px 2px gray;
+        color: white;
+        
+    }
+    #modal_removecheck .title h2 {
+        display: inline;
+    }
+    #modal_removecheck .close-area {
+        display: inline;
+        float: right;
+        padding-right: 10px;
+        cursor: pointer;
+        text-shadow: 1px 1px 2px gray;
+        color: white;
+    }
+
+	#modal_confirm{                 
+	  border-right:1px solid #3b5fbf; 
+	}
+	
+/*모달 삭제 완료*/
+ 
+  #modal_remove.modal-overlay {
+        width: 100%;
+        height: 100%;
+        position:fixed;
+        display: none;
+		top:50%; 
+		left:50%;
+		transform: translate(-50%,-50%);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.25);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(1.5px);
+        -webkit-backdrop-filter: blur(1.5px);
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+    #modal_remove .modal-window {
+        background: rgba( 69, 139, 197, 0.70 );
+        box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+        backdrop-filter: blur( 13.5px );
+        -webkit-backdrop-filter: blur( 13.5px );
+        border-radius: 10px;
+        border: 1px solid rgba( 255, 255, 255, 0.18 );
+        width: 400px;
+        height: 200px;
+        position: relative;
+        top: -100px;
+        padding: 10px;
+    }
+    #modal_remove .title {
+        padding-left: 10px;
+        display: inline;
+        text-shadow: 1px 1px 2px gray;
+        color: white;
+        
+    }
+    #modal_remove .title h2 {
+        display: inline;
+    }
+    #modal_remove .close-area {
+        display: inline;
+        float: right;
+        padding-right: 10px;
+        cursor: pointer;
+        text-shadow: 1px 1px 2px gray;
+        color: white;
+    }
+/* 페이지 이동 막기   */  
+ .scrollLock { overflow: hidden; }
+ 
+
+ /*수정/삭제 버튼 */
+.btn-write{
+	 text-align:center;
+	 line-height: 50px;
+	 margin: 0 7px;
+	 width: 150px;
+	 border-radius: 10px;
+	 background-color:rgb(47, 153, 244);
+     border: 2px solid rgb(47, 153, 244);
+     box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
+     font-weight: bold;
+     color: white;
+}
+
+    .btn-write:hover{
+        background-color:#007aff ;
+        border: none;
+        transition-duration: 0.5s;
+        border: 2px solid #007aff;
+    }
+
+
+.btn-remove{
+	 text-align:center;
+	 line-height: 50px;
+	 margin: 0 7px;
+	 width: 150px;
+	 border-radius: 10px;
+	 background-color:#e15d5d;
+     border: 2px solid #e15d5d;
+     box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
+
+     font-weight: bold;
+     color: white;
+}
+
+
+    .btn-remove:hover{
+        background-color:#ca4444 ;
+        border: none;
+        transition-duration: 0.5s;
+        border: 2px solid #ca4444;
+    }

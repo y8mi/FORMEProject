@@ -1,0 +1,103 @@
+@charset "UTF-8";
+
+
+.membercontainer{
+	width: 1500px;
+	margin-left: 100px;
+}
+
+.memberheader{
+	width: 1000px;
+    background-color : white;
+    border-radius : 15px;
+    margin-top : 70px;
+    margin-left: 250px;
+} 
+
+.memberform{
+	margin-left : 250px; 
+}
+
+.membertext{
+margin-left : 330px; 
+} 
+
+.memberFooter{
+margin-left : 300px;    
+}
+
+
+/*  input[type="checkbox"] {
+    width: 8rem;
+    height: 4rem;
+    border-radius: 10px;
+    border: 1px solid #999;
+    appearance: none;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  input[type="checkbox"]:checked {
+    background: #3ab1de;
+    border: none;
+  }  */
+  
+  
+  
+ .membertext input {
+ 
+ width:300px; 
+ height:40px; 
+ font-size:17px; 
+ border-radius: 7px; 
+ padding:5px; border:1.5px solid #dedede
+ }
+ 
+
+ 
+.email_id input{
+ width:100px; 
+ height:40px;
+}
+  
+ .memberReset {
+ padding: 0%;
+ width: 18rem;
+ height: 6rem;
+ color: white;
+ font-size: 22px;
+ font-weight : bold;
+ background-color: rgb(47, 153, 244);
+ border-color: white;
+ border-radius: 10px;
+ }
+ 
+ .memberSubmit{
+ padding: 0%;
+ width: 18rem;
+ height: 6rem;
+ color: white;
+ font-size: 22px;
+ font-weight : bold;
+ background-color: rgb(47, 153, 244);
+ border-color: #ffffff;
+ border-radius: 10px;
+ }
+ 
+   .h-footer a {
+   cursor:pointer;
+   color: #444444;
+   text-decoration: none; 
+  }
+ 
+ 
+ .id_ok{
+color: rgb(13, 134, 234);
+display: none;
+}
+
+.id_already{
+color:#d50000; 
+display: none;
+}
+

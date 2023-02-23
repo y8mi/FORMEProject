@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.mapper.MgPostingMapper">
+
+	<!-- CDATA는 부등호 사용 시  -->
+	 <!-- 심사 신청 게시판 리스트 불러오기 -->
+	<!-- <select id="getManagerList" resultType="org.zerock.domain.PostingVO">
+		<![CDATA[
+		select * from posting where bno > 0 AND postright = 0
+		]]>
+	</select>  -->
+	
+	
+	<!-- 심사 목록 게시판 (페이징 처리) -->
+	<select id="getManagerList"  resultType="org.zerock.domain.PostingVO" >
+		  <![CDATA[
+			select 
+		    	 bno,title, categoryno, postdate, id, con1, con2 ,con3 ,con4
+		      from 
+		      (
+		      select /*+INDEX_DESC(posting pk_posting) */
+		          rownum rn, bno, title, categoryno, postdate, id , con1, con2 ,con3 ,con4
+		        from 
+		          posting
+		       where 
+		       ]]> 
+		       
+		       <trim prefix="(" suffix=") AND " prefixOverrides="OR">
+				<foreach item='type' collection="typeArr">
+					<trim prefix="OR">
+						<choose>
+							<when test="type == 'T'.toString()">
+								title like '%'||#{keyword}||'%'
+							</when>
+							<when test="type == 'C'.toString()">
+								con1 like '%'||#{keyword}||'%' or
+								con2 like '%'||#{keyword}||'%' or
+								con3 like '%'||#{keyword}||'%' or
+								con4 like '%'||#{keyword}||'%'
+							</when>
+							<when test="type == 'W'.toString()">
+								id like '%'||#{keyword}||'%'
+							</when>
+						</choose>
+					</trim>
+				</foreach>
+			</trim>
+		       
+		       <![CDATA[
+		       rownum <= #{pageNum} * #{amount} and postright = 0
+              ) 
+             where rn > (#{pageNum} -1) * #{amount} 
+		   ]]>
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- 심사 목록 게시판 검색 토탈 -->
+	<select id="getTotalCount" resultType="int">
+		<![CDATA[
+		select count(*) from posting where 
+		]]>
+			<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+				<foreach item='type' collection="typeArr">
+					<trim prefix="OR">
+						<choose>
+							<when test="type == 'T'.toString()">
+								title like '%'||#{keyword}||'%'
+							</when>
+							<when test="type == 'C'.toString()">
+								con1 like '%'||#{keyword}||'%' or
+								con2 like '%'||#{keyword}||'%' or
+								con3 like '%'||#{keyword}||'%' or
+								con4 like '%'||#{keyword}||'%'
+							</when>
+							<when test="type == 'W'.toString()">
+								id like '%'||#{keyword}||'%'
+							</when>
+						</choose>
+					</trim>
+				</foreach>
+			</trim>
+	      
+	  <![CDATA[    
+	      bno > 0 and postright = 0
+	  ]]>	
+	</select>
+	
+
+	<!-- CS 목록 게시판 (페이징 처리) -->
+	<select id="getcs"  resultType="org.zerock.domain.CsVO" >
+		  <![CDATA[
+			select 
+		    	 csbno, title, content, csdate, csid 
+		      from 
+		      (
+		      select /*+INDEX_DESC(posting pk_posting) */
+		          rownum rn, csbno, title, content, csdate, csid
+		        from 
+		          cs_board
+		       where 
+		       ]]> 
+		       
+		       <trim prefix="(" suffix=") AND " prefixOverrides="OR">
+				<foreach item='type' collection="typeArr">
+					<trim prefix="OR">
+						<choose>
+							<when test="type == 'T'.toString()">
+								title like '%'||#{keyword}||'%'
+							</when>
+							<when test="type == 'C'.toString()">
+								content like '%'||#{keyword}||'%' 
+							</when>
+							<when test="type == 'W'.toString()">
+								csid like '%'||#{keyword}||'%'
+							</when>
+						</choose>
+					</trim>
+				</foreach>
+			</trim>
+		       
+		       <![CDATA[
+		       rownum <= #{pageNum} * #{amount} and csbno > 0
+              ) 
+             where rn > (#{pageNum} -1) * #{amount} 
+		   ]]>
+	</select>
+	
+	<!-- CS 목록 게시판 검색 토탈 -->
+	<select id="getCsTotal" resultType="int">
+		<![CDATA[
+		select count(*) from cs_board where 
+		]]>
+			<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+				<foreach item='type' collection="typeArr">
+					<trim prefix="OR">
+						<choose>
+							<when test="type == 'T'.toString()">
+								title like '%'||#{keyword}||'%'
+							</when>
+							<when test="type == 'C'.toString()">
+								content like '%'||#{keyword}||'%' 
+							</when>
+							<when test="type == 'W'.toString()">
+								csid like '%'||#{keyword}||'%'
+							</when>
+						</choose>
+					</trim>
+				</foreach>
+			</trim>
+	      
+	  <![CDATA[    
+	      csbno > 0
+	  ]]>	
+	</select>
+	
+	
+	
+	
+	<!-- CS 문의 상세페이지 -->
+	<select id="readCs" resultType="org.zerock.domain.CsVO">
+	SELECT cs_board.csbno, cs_board.csid, cs_board.title, cs_board.postbno, cs_board.content, cs_board.csdate, posting.postpenalty
+	FROM cs_board
+	LEFT JOIN posting ON cs_board.postbno = posting.bno
+	WHERE cs_board.csbno = #{bno}
+	</select>
+
+	<!-- posting 상세페이지 -->
+	<select id="read" resultType="org.zerock.domain.PostingVO">
+		select * 
+		from posting 
+		where bno = #{bno} 
+	</select>
+	
+	
+	<delete id="delete" >
+		delete from posting where bno = #{bno} 
+	</delete>
+	
+	<update id="update" >
+		update posting
+		set postright = 1
+		where bno = #{bno}
+	</update>
+	
+	<update id="update2" >
+		update posting
+		set postright = 2
+		where bno = #{bno}
+	</update>
+	
+	<update id="con5" >
+		update posting
+		set con5 = #{con5} , postright = 2
+		where bno = #{bno}
+	</update>
+	
+	<!-- 메인 페이지 동영상 업로드 -->
+	<update id="video">
+		update member
+		set video = #{video}
+		where id = 'master'
+	</update>
+	
+	
+	<!-- 메인 페이지 동영상 끌고오기 -->
+	<select id="getVideo" resultType="org.zerock.domain.MemberVO">
+		select video 
+		from member 
+		where id = 'master'
+	</select> 
+	
+	<update id="postpenalty">
+		update posting
+		set postpenalty = postpenalty + 1
+		where bno = #{bno}
+	</update>
+	
+	
+	<!-- 인기강습 랭킹 -->
+   <select id="selectPopularPost" resultType="org.zerock.domain.ApplicationVO"> <!-- 수강신청의 갯수가 가장 많은 순으로 bno정렬 -->
+      SELECT bno, count(bno) as applycnt
+      FROM application
+        where applystatus = 1
+      GROUP BY bno
+      ORDER BY applycnt DESC
+   </select>
+   
+   
+   <!-- 강습 게시글 삭제 -->
+   
+   <delete id="postdelete">
+   	delete from posting where bno = #{bno}
+   </delete>
+   
+   <update id="updateReplyCnt">
+       update tbl_board set replycnt = replycnt + #{amount} where bno = #{bno}
+   </update> 
+	
+</mapper>

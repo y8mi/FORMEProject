@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.zerock.mapper.BoardMapper">
+
+	<select id="getList" resultType="org.zerock.domain.PostingVO">
+		  <![CDATA[
+			select 
+		    	  bno, id, categoryno, title, startdate, enddate, starttime, price, con1, con2, con3, con4, classtime, uuid, uploadpath, filename
+		      from 
+		      (
+		      select /*+INDEX_DESC(posting pk_posting) */
+		          rownum as rn, a.bno, a.id, a.categoryno, a.title, a.startdate, a.enddate, a.starttime, a.price, a.con1, a.con2, a.con3, a.con4, a.classtime, b.uuid, b.uploadpath, b.filename 
+		        from 
+		          posting a
+		          , (select * from (select row_number() over(partition by bno order by bno) as rnum, bno, uuid, uploadpath, filename from upload) where rnum = 1) b 
+		       where 1=1
+		         and a.bno = b.bno(+)
+		       	 and a.bno > 0 	       	 
+		       	 and a.postright = 1
+		       	 and rownum > 0 )
+	       ]]>
+	</select>
+
+	<!-- 글쓰기 : insert문 -->
+	<insert id="insert">
+		insert into posting (bno, id, categoryno, title,
+			startdate, enddate, starttime, price, con1, con2, con3, con4,
+			classtime )
+		values (seq_bno.nextval, #{id}, #{categoryno}, #{title},
+			#{startdate}, #{enddate}, #{starttime}, #{price}, #{con1}, #{con2},
+			#{con3}, #{con4}, #{classtime})
+	</insert>
+
+	<!-- 글읽기 : select문 -->
+	<select id="read" resultType="org.zerock.domain.PostingVO">
+		select * from posting where bno = #{bno}
+	</select>
+
+	<!-- 삭제 -->
+	<delete id="delete">
+		delete from posting where bno = #{bno}
+	</delete>
+
+	<!-- 수정 -->
+	<update id="update">
+		update posting
+		set title = #{title},
+			startdate = #{startdate},
+			enddate = #{enddate},
+			starttime = #{starttime},
+			updatedate = sysdate,
+			price = #{price},
+			con1 = #{con1},
+			con2 = #{con2},
+			con3 = #{con3},
+			classtime = #{classtime}
+		where bno = #{bno}
+	</update>
+
+
+	<!-- selectKey -->
+	<insert id="insertSelectKey">
+		<selectKey keyProperty="bno" order="BEFORE"
+			resultType="long">
+			select seq_bno.nextval from dual
+		</selectKey>
+
+		insert into posting (bno, id, categoryno, title, startdate, enddate,
+			starttime, price, con1, con2, con3, con4, classtime )
+		values (#{bno}, #{id}, #{categoryno}, #{title}, #{startdate}, #{enddate}, 
+			#{starttime}, #{price}, #{con1}, #{con2}, #{con3}, #{con4}, #{classtime})
+	</insert>
+
+
+	<!-- 페이징 -->
+	<select id="getListWithPaging"
+		resultType="org.zerock.domain.PostingVO">
+		  <![CDATA[
+			select 
+		    	  bno, id, categoryno, title, startdate, enddate, starttime, price, con1, con2, con3, con4, classtime, uuid, uploadpath, filename
+		      from 
+		      (
+		      select /*+INDEX_DESC(posting pk_posting) */
+		          rownum as rn, a.bno, a.id, a.categoryno, a.title, a.startdate, a.enddate, a.starttime, a.price, a.con1, a.con2, a.con3, a.con4, a.classtime, b.uuid, b.uploadpath, b.filename 
+		        from 
+		          posting a
+		          , (select * from (select row_number() over(partition by bno order by bno) as rnum, bno, uuid, uploadpath, filename from upload) where rnum = 1) b 
+		       where 1=1
+		         and a.bno = b.bno(+)
+	             and a.categoryno = #{keyword}
+		       	 and a.bno > 0 	       	 
+		       	 and a.postright = 1
+		       	 and rownum > 0 
+		       	 and rownum <= (#{pageNum} * #{amount})
+	       ]]>
+		<if test="title != null">
+			and title like '%'||#{title}||'%'
+		</if>
+            <![CDATA[ 
+		      order by a.postdate desc
+              )
+             where 1=1
+               and rn > (#{pageNum} -1) * #{amount} 
+		   ]]>
+	</select>
+
+
+	<!-- 토탈 검색 페이징 -->
+	<select id="getListTotal"
+		resultType="org.zerock.domain.PostingVO">
+		   <![CDATA[
+			select 
+		    	  bno, id, categoryno, title, startdate, enddate, starttime, price, con1, con2, con3, con4, classtime, uuid, uploadpath, filename
+		      from 
+		      (
+		      select /*+INDEX_DESC(posting pk_posting) */
+		          rownum as rn, a.bno, a.id, a.categoryno, a.title, a.startdate, a.enddate, a.starttime, a.price, a.con1, a.con2, a.con3, a.con4, a.classtime, b.uuid, b.uploadpath, b.filename 
+		        from 
+		          posting a
+		          , (select * from (select row_number() over(partition by bno order by bno) as rnum, bno, uuid, uploadpath, filename from upload) where rnum = 1) b 
+		       where 1=1
+		         and a.bno = b.bno(+)
+	             and categoryno between 1 and 6
+		       	 and a.bno > 0 	       	 
+		       	 and a.postright = 1
+		       	 and rownum > 0 
+		       	 and rownum <= (#{pageNum} * #{amount})
+	       ]]>
+		<if test="title != null">
+			and title like '%'||#{title}||'%'
+		</if>
+            <![CDATA[ 
+		      order by a.postdate desc
+              )
+             where 1=1
+               and rn > (#{pageNum} -1) * #{amount} 
+		   ]]>
+	</select>
+
+	<!--카테고리별 데이터 개수 처리 -->
+	<select id="getTotalCount" resultType="int">
+		SELECT
+		COUNT(*)
+		FROM POSTING
+		WHERE 1=1
+		AND CATEGORYNO = #{keyword}    <!-- ex: keyword val = 1 (101) -->
+		AND BNO > 0
+		<if test="title != null">
+			and title like '%'||#{title}||'%'
+		</if>
+	</select>
+
+	<!--전체 데이터 개수 처리 -->
+    <select id="getTotalCountAll" resultType="int">
+    		SELECT 
+    			COUNT(*) 
+    		  FROM POSTING 	
+    		 WHERE 1=1
+    		   AND BNO > 0
+    		 <if test="title != null">
+    		    
+    		    and title like '%'||#{title}||'%'
+    		    
+    		 </if>
+    </select>
+
+	<!-- 첨부파일 삭제 -->
+	<delete id="deletefile">
+		delete from upload where uuid =#{uuid}
+	</delete>
+
+	<!-- 수강신청 -->
+	<insert id="applyinsert">
+		insert into application (applyno, bno, id, classdate, title)
+		values (seq_applyno.nextval, #{bno}, #{id}, #{classdate}, #{title})
+	</insert>
+
+
+	<!-- 위시담기 -->
+	<insert id="wishinsert">
+		insert into cart(id, wish)
+		select m.id, #{wish}
+		from member m
+		where m.id = #{id}
+	</insert>
+
+
+	<!-- 위시 조회 -->
+	<select id="cartget" resultType="org.zerock.domain.CartVO">
+		select * from cart where wish = #{bno}
+	</select>
+
+	<!-- 위시 삭제 -->
+	<delete id="wishremove">
+		delete from cart where id= #{id} and wish= #{wish}
+	</delete>
+
+	<!-- 인기강습 랭킹 -->
+	<select id="selectPopularPost"
+		resultType="org.zerock.domain.ApplicationVO"> <!-- 수강신청의 갯수가 가장 많은 순으로 bno정렬 -->
+		SELECT bno, COUNT(bno) as applycnt
+		FROM application
+		where applystatus = 1
+		GROUP BY bno
+		ORDER BY applycnt DESC
+	</select>
+
+
+
+</mapper>
