@@ -255,7 +255,7 @@
 	<select id="csdetail" resultType="org.zerock.domain.CsVO">
 		select *
 		from cs_board
-		where csbno = #{bno}
+		where csbno = #{csbno}
 	</select>
 	
 	<!-- 고객문의 등록 -->
@@ -273,6 +273,13 @@
 		insert into cs_board (title, csbno, csdate, content, postbno, csid)
 		values (#{title}, seq_csbno.nextval, sysdate, #{content}, #{postbno}, #{csid})
 	</insert>
+	
+	
+	<select id="bnoCheck" resultType="int">
+		select count(*) 
+		from posting 
+		where bno = #{bno}	
+	</select>
 	
 	
 </mapper>

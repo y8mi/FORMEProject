@@ -147,7 +147,7 @@
 				<tr>
 					<td><c:out value="${list.csbno}" /></td>
 					
-					<td><a href='/mypage/buyercsdetail?bno=<c:out value="${list.csbno}"/>'><c:out value="${list.title}"/></a></td>
+					<td><a href='/mypage/buyercsdetail?csbno=<c:out value="${list.csbno}"/>'><c:out value="${list.title}"/></a></td>
 					<%-- <td><c:out value="${list.title}" /></td> --%>
 					<td><c:out value="${list.postbno}" /></td>
 					<td><fmt:formatDate pattern="yyyy-MM-dd"

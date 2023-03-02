@@ -9,11 +9,10 @@ import lombok.Data;
 public class CsreplyVO {
 	
 	private Long rno;
-	private Long bno;
-	
+	private Long csbno;
+	private String id;
 	private String csreply;
-	private String replyer;
-	private Date replyDate;
-	private Date updateDate;
+	private Date replayerdate;
+	private Date updatedate;
 
 }

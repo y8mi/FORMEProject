@@ -173,7 +173,7 @@
 	SELECT cs_board.csbno, cs_board.csid, cs_board.title, cs_board.postbno, cs_board.content, cs_board.csdate, posting.postpenalty
 	FROM cs_board
 	LEFT JOIN posting ON cs_board.postbno = posting.bno
-	WHERE cs_board.csbno = #{bno}
+	WHERE cs_board.csbno = #{csbno}
 	</select>
 
 	<!-- posting 상세페이지 -->
@@ -221,7 +221,7 @@
 		where id = 'master'
 	</select> 
 	
-	<update id="postpenalty">
+	<update  id="postpenalty">
 		update posting
 		set postpenalty = postpenalty + 1
 		where bno = #{bno}
@@ -244,8 +244,21 @@
    	delete from posting where bno = #{bno}
    </delete>
    
-   <update id="updateReplyCnt">
-       update tbl_board set replycnt = replycnt + #{amount} where bno = #{bno}
-   </update> 
+   <!-- 문의글 삭제 -->
+   <delete id="csdelete">
+   	delete from cs_board where csbno = #{csbno}
+   </delete>
+   
+    <!-- 문의 게시글 댓글 -->
+    <insert id="csreply">
+		insert into csreply (rno, id, csreply, csbno, replayerdate, updatedate)
+		values (seq_csbno.nextval,#{id}, #{csreply}, #{csbno}, sysdate, sysdate)
+	</insert>
+	
+	<!-- 문의 게시글 댓글 수정 -->
+	<update id="replymodify">
+	    update csreply set csreply = #{csreply},updatedate = sysdate 
+        where rno = #{rno}
+	</update>
 	
 </mapper>

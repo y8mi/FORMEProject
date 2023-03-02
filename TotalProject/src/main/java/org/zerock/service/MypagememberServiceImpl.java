@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 import org.zerock.domain.ApplicationVO;
 import org.zerock.domain.CartVO;
 import org.zerock.domain.CsVO;
+import org.zerock.domain.CsreplyVO;
 import org.zerock.domain.MemberVO;
 import org.zerock.domain.PagingCriteria;
 import org.zerock.domain.PostingVO;
+import org.zerock.mapper.CsreplyMapper;
 import org.zerock.mapper.MypagememberMapper;
 
 import lombok.AllArgsConstructor;
@@ -23,6 +25,7 @@ public class MypagememberServiceImpl implements MypagememberService {
 	
 	@Setter(onMethod_ = @Autowired)
 	private MypagememberMapper MypagememberMapper;
+	
 
 	@Override
 	public boolean memberupdate(MemberVO id) {
@@ -166,10 +169,10 @@ public class MypagememberServiceImpl implements MypagememberService {
 			
 		    //고객문의 상세페이지
 			@Override
-			public CsVO csdetail(Long bno) {
-				log.info("get....." + bno);
+			public CsVO csdetail(CsVO vo) {
+				log.info("get....." + vo);
 				
-				return MypagememberMapper.csdetail(bno);
+				return MypagememberMapper.csdetail(vo);
 			}
 			 
 			//고객 문의 등록
@@ -184,7 +187,19 @@ public class MypagememberServiceImpl implements MypagememberService {
 				return 0;
 			}
 			
-			
+			// 게시글 여부 체크
+			@Override
+			public int bnoCheck(Long postbno) {
+
+			    int bno = MypagememberMapper.bnoCheck(postbno);
+				return bno;
+			}
+
+			@Override
+			public void update(CsreplyVO reply) {
+				MypagememberMapper.update(reply);
+				
+			}
 	
 
 }

@@ -130,6 +130,7 @@ color: white;
 width: 150px;
 height: 50px;
 margin-left: 130px;
+margin-bottom: 100px;
 background-color: rgb(47, 153, 244);
 border-radius: 10px 10px 10px 10px;
 box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2); 
@@ -139,6 +140,68 @@ font-weight: bold;
 color: white;
 }
 
+.reply-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  width: 800px;
+  margin-left: 350px;
+}
+
+.reply-header {
+  display: flex;
+  justify-content: space-between;
+  background-color: #f1f1f1;
+  border-radius: 10px 10px 0 0;
+  padding: 10px;
+  font-weight: bold;
+}
+
+.reply-body {
+  background-color: #ffffff;
+  border: 1px solid #dddddd;
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.reply-date {
+  font-size: 15px;
+  color: #999999;
+}
+
+.reply-content {
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.reply-actions{
+ font-size: 17.5px;
+}
+
+.reply-id{
+ font-size: 19px;
+}
+
+.replytext{
+  width: 800px;
+  margin-left: 350px;
+  margin-top: 100px;
+  margin-bottom: 200px;
+  
+}
+
+.reply2{
+border: 1px solid #dddddd;
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+}
+
+.paging {
+  position: absolute;
+ right: 267px;
+}
 
 </style>
 </head>
@@ -149,7 +212,7 @@ color: white;
 	<div class="table table-striped table-boardered table-hover">
 		
 			<table id="table">
-				<th class="title" colspan="2">${menu.title}</th>
+				<th class="title" colspan="3">${menu.title}</th>
 				<input type="hidden" name="csbno" value="${menu.csbno}"/>
 		
 				<tr style="height: 32px;">
@@ -180,78 +243,91 @@ color: white;
 	
 
 
-<div class='row'>
 
-  <div class="col-lg-12">
-
-    <!-- /.panel -->
-    <div class="panel panel-default">
-<!--       <div class="panel-heading">
-        <i class="fa fa-comments fa-fw"></i> Reply
-      </div> -->
       
-      <div class="panel-heading">
-        <i class="fa fa-comments fa-fw"></i> Reply
-        <button id="addReplyBtn" class='btn btn-primary btn-xs pull-right'>New Reply</button>
-      </div>      
-      
-      
-      <!-- /.panel-heading -->
-      <div class="panel-body">        
-      
-        <ul class="chat">
+     <!-- ----------------------------- 댓글 부분---------------------------------- -->
 
-        </ul>
-        <!-- ./ end ul -->
-      </div>
-      <!-- /.panel .chat-panel -->
+		
+<div class="reply">
 
-   <div class="panel-footer"></div>
+<form class="replyremove" method="POST" >
+<c:forEach var="reply" items="${reply}">
+	<div class="reply-container">
+	  <div class="reply-header">
+	    <div class="reply-info">
+	    
+	      <span class="reply-id">[${reply.id}]님의 댓글 </span>&nbsp;
+	      <span class="reply-date"><fmt:formatDate pattern="yyyy-MM-dd" value="${reply.replayerdate }" /></span>
+	    </div>
+	    <div class="reply-actions">
+	       <input type="hidden" name="rno" value="${reply.rno}">
+	       <input type="hidden" name="csbno" value="${reply.csbno}">
+	       <a href="#" class="delete" onclick="deleteReply(this)">삭제</a>
+	    </div>
+	  </div>
+	  <div class="reply-body">
+	    <div class="reply-content">
+	      ${reply.csreply}
+	    </div>
+	   
+	  </div>
+	</div>
+</c:forEach>
+ 
+ </form>
+ 
+ 			<div class='paging'>
+					<ul class="pagination">
+					       <c:if test="${pageMaker.prev}">
+							<li class="paginate_button previous"><a
+								href="${pageMaker.startPage -1}">Previous</a></li>
+						</c:if>
 
+						<c:forEach var="num" begin="${pageMaker.startPage}"
+							end="${pageMaker.endPage}">
+							<li class="paginate_button  ${pageMaker.cri.pageNum == num ? "active":""} ">
+								<a href="${num}">${num}</a>
+							</li>
+						</c:forEach>
 
-      </div>
-  </div>
-  <!-- ./ end row -->
-</div>
-
-
-
-<!-- Modal -->
-      <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-        aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal"
-                aria-hidden="true">&times;</button>
-              <h4 class="modal-title" id="myModalLabel">REPLY MODAL</h4>
-            </div>
-            <div class="modal-body">
-              <div class="form-group">
-                <label>Reply</label> 
-                <input class="form-control" name='reply' value='New Reply!!!!'>
-              </div>      
-              <div class="form-group">
-                <label>Replyer</label> 
-                <input class="form-control" name='replyer' value='replyer'>
-              </div>
-              <div class="form-group">
-                <label>Reply Date</label> 
-                <input class="form-control" name='replyDate' value='2018-01-01 13:13'>
-              </div>
-      
-            </div>
-<div class="modal-footer">
-        <button id='modalModBtn' type="button" class="btn btn-warning">Modify</button>
-        <button id='modalRemoveBtn' type="button" class="btn btn-danger">Remove</button>
-        <button id='modalRegisterBtn' type="button" class="btn btn-primary">Register</button>
-        <button id='modalCloseBtn' type="button" class="btn btn-default">Close</button>
-      </div>          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-      </div>
-      <!-- /.modal -->
+						<c:if test="${pageMaker.next}">
+							<li class="paginate_button next"><a
+								href="${pageMaker.endPage +1 }">Next</a></li>
+						</c:if>
+					</ul>
+				</div>
+				<!--  end Pagination -->
+		
+			<form id='actionForm' action="/mypage/buyercsdetail" method='get'>
+				<input type="hidden" name="csbno" value="${menu.csbno }">
+				<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
+				<input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
+				<%-- <input type='hidden' name='type' value='<c:out value="${ pageMaker.cri2.type }"/>'> 
+				<input type='hidden' name='keyword' value='<c:out value="${ pageMaker.cri2.keyword }"/>'> --%> 
+			</form>
+ 
+		<div class="replytext">
+			<form method="post" id="csreply" class="reply2"
+				
+				style="border: 1px solid #ccc; padding: 20px; border-radius: 10px;">
+				<p>
+					<label for="reply-textarea"
+						style="font-size: 17px; font-weight: bold; margin-bottom: 10px;">문의 댓글</label>
+				</p>
+				<p>
+					<textarea id="reply-textarea" name="csreply" id="csreply"
+						placeholder="댓글을 입력해주세요"
+						style="width: 100%; height: 200px; font-weight: bold; border: none; padding: 10px; border-radius: 4px; background-color: #f8f9fa;"></textarea>
+				</p>
+				<p style="text-align: right;">
+					<input type="hidden" name="csbno" value="${menu.csbno}"> 
+					<input type="hidden" name="id" value="${menu.csid}">
+					<input type="submit" id="reply" 
+						style="background-color: rgb(47, 153, 244); font-weight: bold; color: #fff; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;" value="댓글 작성">
+				</p>
+			</form>
+		</div>
+		<!-- ----------------------------- 댓글 부분---------------------------------- -->
 
     
 </body>
@@ -522,6 +598,25 @@ $(document).ready(function () {
  
 });
 
+
+
+
+var formreply = $(".reply2");
+
+
+$("#reply").on("click", function(e) {
+	if (formreply.find('textarea[name="csreply"]').val().length == 0) {
+		alert("댓글을 입력해주세요.");
+		formreply.find('textarea[name="csreply"]').focus();
+		
+		return false;
+	} else {
+		formreply.attr("action", "/mypage/csreply");
+		formreply.attr("method", "post");
+		formreply.submit();
+	}
+});
+
 </script>
 
 
@@ -683,6 +778,31 @@ $(document).ready(function(){
   });
 
   
+});
+
+
+var formObj2 = $(".replyremove");
+ 
+$(".delete").on("click", function(e){
+	  e.preventDefault();
+	  var rno = $(this).prevAll('input[name="rno"]').val();
+	  var csbno = $(this).prevAll('input[name="csbno"]').val();
+	  var formObj2 = $('<form/>', {action: '/manager/replyremove', method: 'post'});
+	  $('<input>').attr({type: 'hidden', name: 'rno', value: rno}).appendTo(formObj2);
+	  $('<input>').attr({type: 'hidden', name: 'csbno', value: csbno}).appendTo(formObj2);
+	  formObj2.appendTo('body').submit();
+	  alert("댓글이 삭제되었습니다.");
+	});
+	
+	
+var actionForm = $("#actionForm");
+
+$(".paginate_button a").on("click",function(e){
+	e.preventDefault();
+	
+	console.log("click");
+	actionForm.find("input[name='pageNum']").val($(this).attr("href"));
+	actionForm.submit();
 });
 
 </script>

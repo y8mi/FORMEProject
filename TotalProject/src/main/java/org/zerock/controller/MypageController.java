@@ -10,15 +10,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.domain.ApplicationVO;
 import org.zerock.domain.CartVO;
 import org.zerock.domain.CsVO;
+import org.zerock.domain.CsreplyVO;
 import org.zerock.domain.MemberVO;
 import org.zerock.domain.PagingCriteria;
 import org.zerock.domain.PagingDTO;
 import org.zerock.domain.PostingVO;
+import org.zerock.service.CsreplyService;
 import org.zerock.service.MemberService;
+import org.zerock.service.MgPostingService;
 import org.zerock.service.MypagememberService;
 
 import lombok.AllArgsConstructor;
@@ -35,6 +39,12 @@ public class MypageController {
 	
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private MgPostingService mgpostingService;
+	
+	@Autowired
+	private CsreplyService replyservice;
 	
 	
 	// 마이페이지에서 로그아웃
@@ -64,12 +74,20 @@ public class MypageController {
 		 }
 		 
 		 //고객 문의 게시글 상세페이지
-		 @GetMapping("/buyercsdetail")
-		 	public void csdatail(@RequestParam("bno") Long bno, Model model) {
+	
+	 @GetMapping("/buyercsdetail") 
+	 public void csdatail(CsVO vo, PagingCriteria cri, Model model) {
+	 
+	 int total = replyservice.getReplyTotal(cri);
+	 log.info("고객문의 상세페이지"); 
+	 
+	 model.addAttribute("menu", MypagememberService.csdetail(vo)); 
+	 model.addAttribute("reply", mgpostingService.replyList(cri)); 
+	 model.addAttribute("pageMaker", new PagingDTO(cri, total));
+	 }
+	 
 
-		 		log.info("고객문의 상세페이지");
-		 		model.addAttribute("menu", MypagememberService.csdetail(bno));
-		 }
+	
 		 
 		 
 		 // 고객 문의 글쓰기
@@ -93,6 +111,29 @@ public class MypageController {
 		   public String buyercsregi() {
 		      return "/mypage/buyercsregister";
 		}
+		
+		// 게시글 여부체크
+		@PostMapping("/bnoCheck")
+		@ResponseBody
+		public int bnoCheck(@RequestParam("postbno") Long postbno) {
+			log.info("게시글 여부체크" + postbno);
+
+			int bno = MypagememberService.bnoCheck(postbno);
+
+			System.out.println("bno: " + bno);
+			return bno;
+		}
+		
+		//문의 게시글 댓글 입력
+		 @PostMapping("/csreply")
+			public String csreply(CsreplyVO reply, RedirectAttributes rttr) {
+
+				log.info(reply);
+				
+				mgpostingService.csreply(reply);
+					/* rttr.addAttribute("id", board.getCsid()); */ // getCsId() 메서드를 사용하여 id 값을 가져옴
+					     return "redirect:/mypage/buyercsdetail?csbno=" + reply.getCsbno(); // 리턴 경로 수정
+			}	 
 
 	
 //	 	// 구매자용 마이페이지
@@ -521,6 +562,8 @@ public class MypageController {
 		 	 
 		 	 return "redirect:/mypage/sellerbuyercheck?id=" + ids;
 		 }
+		
+		
 
 
 	

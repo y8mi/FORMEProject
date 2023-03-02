@@ -148,7 +148,7 @@ td, th {
 					<th class="title" colspan="2"><input type="text" name="title" style="width:100%; border: 0;" placeholder="제목"/></th>
 					
 					<tr style="height: 32px;">
-						<td class="postbno"><input type="text" name="postbno" placeholder="강습 게시글 번호를 입력하세요." style="font-size:17px; width:100%; border: 0;"/></td>
+						<td class="postbno"><input type="text" id="postbno" name="postbno" onblur="bnoCheck()" placeholder="강습 게시글 번호를 입력하세요." style="font-size:17px; width:100%; border: 0;"/></td>
 						<td class="id"><input type="text" name="csid" style="width:100%; border: 0;" value="${member_s.id}" readonly></td>
 					</tr>
 					<tr style="height: 24px;">
@@ -156,7 +156,6 @@ td, th {
 					</tr>
 					<tr>
 						<td class="content" colspan="3"><textarea rows="10" cols="60" name="content" placeholder="문의 내용을 입력하세요."></textarea></td>
-						
 					</tr>
 				</table>
 			
@@ -203,6 +202,22 @@ td, th {
 	        regiform.submit();
 	    }
 	})
+	
+	 function bnoCheck(){
+           var postbno = $("#postbno").val(); //id값이 "id"인 입력란의 값을 저장
+           $.ajax({
+               url:"/mypage/bnoCheck", //Controller에서 요청 받을 주소
+               type:"post", //POST 방식으로 전달
+               dataType: "json",
+               data:{"postbno" : postbno},
+               success:function(bno){ //컨트롤러에서 넘어온 cnt값을 받는다 
+                   if(bno == 0){ //cnt가 1이 아니면(=0일 경우) -> 사용 가능한 아이디 
+                	   alert("없는 게시글 번호 입니다.");
+                	   $('#postbno').val('');
+                   }
+               }
+           })
+       }
 
 		
 		

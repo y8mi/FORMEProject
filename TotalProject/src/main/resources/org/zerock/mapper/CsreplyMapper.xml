@@ -25,15 +25,77 @@
    </delete>
    
    <update id="update">
-      update csreply set reply = #{reply},updatedate = sysdate 
+      update csreply set csreply = #{csreply},updatedate = sysdate 
       where rno = #{rno}
    </update>
    
-   <select id="getListWithPaging" resultType="org.zerock.domain.CsreplyVO">
-      select rno, csbno, reply, replyer, replyDate, updatedate
+ <!--   <select id="getListWithPaging" resultType="org.zerock.domain.CsreplyVO">
+      select rno, csbno, csreply, replyer, replayerDate, updatedate
       from csreply
       where csbno = #{csbno}
       order by rno asc
-   </select>
+   </select> -->
+   
+  <!--  <select id="replyList" resultType="org.zerock.domain.CsreplyVO">
+   <![CDATA[
+   	select
+   		rno, csbno, csreply, id, replayerdate, updatedate
+    from 
+    (
+        select /*+INDEX_DESC(posting pk_posting) */
+		          rownum rn, rno, csbno, csreply, id, replayerdate, updatedate
+        from 
+        	csreply
+        where
+        ]]>
+         <![CDATA[
+		       rownum <= #{pageNum} * #{amount} and csbno = #{csbno} order by rno asc
+              ) 
+             where rn > (#{pageNum} -1) * #{amount} 
+		   ]]>
+    
+   </select> -->
+   
+   
+   
+   <select id="replyList" resultType="org.zerock.domain.CsreplyVO">
+  <![CDATA[
+    SELECT rno, csbno, csreply, id, replayerdate, updatedate
+    FROM (
+      SELECT /*+INDEX_DESC(csreply pk_csreply)*/
+             rownum rn, rno, csbno, csreply, id, replayerdate, updatedate
+      FROM (
+        SELECT rno, csbno, csreply, id, replayerdate, updatedate
+        FROM csreply
+        WHERE csbno = #{csbno}
+        ORDER BY rno ASC
+      ) 
+      WHERE rownum <= #{pageNum} * #{amount}
+    ) 
+    WHERE rn > (#{pageNum} - 1) * #{amount}
+  ]]>
+</select>
+
+
+
+    <!--    csreply
+    	where csbno = #{csbno}
+    order by rno asc -->
+   
+
+   
+   
+   	<!-- CS 목록 게시판 검색 토탈 -->
+	<select id="getReplyTotal" resultType="int">
+		<![CDATA[
+		select count(*) from csreply where csbno = #{csbno}
+	  ]]>	
+	</select>
+	
+	
+	<delete id="replyremove" >
+		delete from csreply where rno = #{rno} 
+	</delete>
+   
 
 </mapper>

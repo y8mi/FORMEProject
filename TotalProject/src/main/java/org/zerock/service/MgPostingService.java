@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.zerock.domain.ApplicationVO;
 import org.zerock.domain.CsVO;
+import org.zerock.domain.CsreplyVO;
 import org.zerock.domain.MemberVO;
 import org.zerock.domain.PagingCriteria;
 import org.zerock.domain.PostingVO;
@@ -31,7 +32,7 @@ public interface MgPostingService {
 	public PostingVO get(Long bno);
 	
 	//고객문의 게시판 상세페이지
-	public CsVO getCsDetail(Long bno);
+	public CsVO getCsDetail(Long csbno);
 	
 	public boolean update(PostingVO posting);
 
@@ -50,6 +51,19 @@ public interface MgPostingService {
 	
 	//강습 게시글 삭제
 	public boolean postdelete(Long bno);
+	
+	//강습 게시글 삭제
+	public boolean csdelete(Long csbno);
+	
+	//댓글 조회
+	public List<CsreplyVO> replyList(PagingCriteria cri); 
+	
+	// 문의 게시글 댓글
+	public void csreply(CsreplyVO reply);
+	
+	/* public int replym(CsreplyVO reply); */
+	
+	public boolean replyremove(CsreplyVO reply);
 
 }
 

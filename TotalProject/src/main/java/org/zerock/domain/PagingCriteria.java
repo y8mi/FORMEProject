@@ -7,6 +7,7 @@ public class PagingCriteria {
 	
 
 	    private String id;
+	    private Long csbno;
 	    
 		/* 현재 페이지 */  
 		private int pageNum;

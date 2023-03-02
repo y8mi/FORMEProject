@@ -5,6 +5,7 @@ import java.util.List;
 import org.zerock.domain.ApplicationVO;
 import org.zerock.domain.CartVO;
 import org.zerock.domain.CsVO;
+import org.zerock.domain.CsreplyVO;
 import org.zerock.domain.MemberVO;
 import org.zerock.domain.PagingCriteria;
 import org.zerock.domain.PostingVO;
@@ -51,10 +52,15 @@ public interface MypagememberMapper {
 	public String getCsTotal(PagingCriteria cri);
 
 	// 고객문의 상세페이지
-	public CsVO csdetail(Long bno);
+	public CsVO csdetail(CsVO vo);
 
 	// 고객 문의 등록
 	public void csregister(CsVO board);
+	
+	// 강습 게시글 여부 체크
+	public int bnoCheck(Long bno);
+	
+	public void update(CsreplyVO reply);
 
 	
 	}

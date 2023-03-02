@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.zerock.domain.ApplicationVO;
 import org.zerock.domain.CsVO;
+import org.zerock.domain.CsreplyVO;
 import org.zerock.domain.MemberVO;
 import org.zerock.domain.PagingCriteria;
 import org.zerock.domain.PostingVO;
@@ -21,7 +22,7 @@ public interface MgPostingMapper {
 	public List<CsVO> getcs(PagingCriteria cri);
 	
 	//고객 문의 상세페이지
-	public CsVO readCs(Long bno);
+	public CsVO readCs(Long csbno);
 		
 	//강습 심사 상세페이지
 	public PostingVO read(Long bno); 
@@ -55,6 +56,15 @@ public interface MgPostingMapper {
 	//강습 게시글 삭제
 	public int postdelete(Long bno);
 	
+	//강습 게시글 삭제
+	public int csdelete(Long csbno);
+	
 	public void updateReplyCnt(@Param("bno") Long bno, @Param("amount") int amount);
 
+	// 맴버 인서트
+	public void csreply(CsreplyVO reply);
+	
+	
+	public int replymodify(CsreplyVO reply);
+	
 }

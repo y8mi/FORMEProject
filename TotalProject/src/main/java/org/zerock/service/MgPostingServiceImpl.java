@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.zerock.domain.ApplicationVO;
 import org.zerock.domain.CsVO;
+import org.zerock.domain.CsreplyVO;
 import org.zerock.domain.MemberVO;
 import org.zerock.domain.PagingCriteria;
 import org.zerock.domain.PostingVO;
+import org.zerock.mapper.CsreplyMapper;
 import org.zerock.mapper.MgPostingMapper;
 
 import lombok.AllArgsConstructor;
@@ -22,6 +24,9 @@ public class MgPostingServiceImpl implements MgPostingService {
 
 	@Setter(onMethod_ = @Autowired)
 	private MgPostingMapper mapper;
+	
+	@Setter(onMethod_ = @Autowired)
+			private CsreplyMapper replymapper;
 	
 	//고객 문의 게시판 (페이징 처리)
 	@Override
@@ -41,10 +46,10 @@ public class MgPostingServiceImpl implements MgPostingService {
 	 
 	 //고객 문의 상세페이지
 	 @Override
-		public CsVO getCsDetail(Long bno) {
-			log.info("get....." + bno);
+		public CsVO getCsDetail(Long csbno) {
+			log.info("get....." + csbno);
 			
-			return mapper.readCs(bno);
+			return mapper.readCs(csbno);
 		}
 	 
 	//심사 게시판 (페이지 처리)
@@ -126,14 +131,56 @@ public class MgPostingServiceImpl implements MgPostingService {
 	      return mapper.selectPopularPost();
 	   }
 	   
-	//강습 게시글 삭제
+	//문의 게시글 삭제
 	@Override
-	   public boolean postdelete(Long bno) {
+	   public boolean csdelete(Long csbno) {
 	  
-	   log.info("remove...." + bno);
+	   log.info("remove...." + csbno);
 	  
-	   return mapper.postdelete(bno) == 1;
+	   return mapper.csdelete(csbno) == 1;
 	  }
+	
+	//강습 게시글 삭제
+		@Override
+		   public boolean postdelete(Long bno) {
+		  
+		   log.info("remove...." + bno);
+		  
+		   return mapper.postdelete(bno) == 1;
+		  }
+
+	//댓글 조회
+	
+	 @Override public List<CsreplyVO> replyList(PagingCriteria cri){
+	 
+	 return replymapper.replyList(cri);
+	 }
+	
+	@Override
+	public void csreply(CsreplyVO reply) {
+		mapper.csreply(reply);
+	}
+
+	@Override
+	   public boolean replyremove(CsreplyVO reply) {
+	  
+	   log.info("remove...." + reply);
+	  
+	   return replymapper.replyremove(reply) == 1;
+	  }
+
+
+	/*
+	 * @Override public int replymodify(CsreplyVO reply) {
+	 * 
+	 * return mapper.replymodify(reply);
+	 * 
+	 * }
+	 */
+
+	
+	
+
 
 	
 

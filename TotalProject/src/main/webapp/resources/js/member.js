@@ -42,7 +42,7 @@
           /* 아이디 유효성 검사 */
          if(myform.id.value.length == 0){ // myform.id.value == "" 이것도 가능
             alert("아이디가 누락됐습니다.");
-             // 포커스를 이동시켜 바로 아이디를 입력할 수 있게
+            myform.id.focus(); // 포커스를 이동시켜 바로 아이디를 입력할 수 있게
          
          }
          

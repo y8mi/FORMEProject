@@ -312,7 +312,7 @@
 				<tr>
 					<td><c:out value="${list.csbno}" /></td>
 					
-					<td><a href='/manager/csdetail?bno=<c:out value="${list.csbno}"/>'><c:out value="${list.title}"/></a></td>
+					<td><a href='/manager/csdetail?csbno=<c:out value="${list.csbno}"/>'><c:out value="${list.title}"/></a></td>
 					<%-- <td><c:out value="${list.title}" /></td> --%>
 					<td><fmt:formatDate pattern="yyyy-MM-dd"
 							value="${list.csdate}" /></td>

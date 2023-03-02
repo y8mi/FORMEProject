@@ -16,7 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.domain.Criteria;
 import org.zerock.domain.CsVO;
+import org.zerock.domain.CsreplyVO;
 import org.zerock.domain.PagingDTO;
 import org.zerock.domain.MemberVO;
 import org.zerock.domain.PageDTO;
@@ -32,6 +35,7 @@ import org.zerock.domain.PagingDTO;
 import org.zerock.domain.PostingVO;
 import org.zerock.domain.UploadVO;
 import org.zerock.service.BoardService;
+import org.zerock.service.CsreplyService;
 import org.zerock.service.MgPostingService;
 
 import jdk.internal.org.jline.utils.Log;
@@ -45,6 +49,9 @@ public class ManagerController {
 	
 	@Autowired
 	private MgPostingService service;
+	
+	@Autowired
+	private CsreplyService replyservice;
 	
 
 	@GetMapping("/manager")
@@ -99,11 +106,18 @@ public class ManagerController {
 	 
 	 
 	 //고객 문의 상세페이지
-	 @GetMapping({"/csdetail"})
-	 	public void getCsDetail(@RequestParam("bno") Long bno, Model model) {
+	 @GetMapping("/csdetail")
+	 	public void getCsDetail(@RequestParam("csbno") Long csbno, PagingCriteria cri, Model model) {
 
-	 		log.info("문의 상세페이지");
-	 		model.addAttribute("menu", service.getCsDetail(bno));
+	 		
+	 		int total = replyservice.getReplyTotal(cri);
+	 		log.info("문의 상세페이지" + csbno + cri + total);
+	 	
+	 		//문의 게시글 끌고오기
+	 		model.addAttribute("menu", service.getCsDetail(csbno));
+	 		//댓글 끌고오기
+	 		model.addAttribute("reply", service.replyList(cri));
+	 		model.addAttribute("pageMaker", new PagingDTO(cri, total));
 	 	}
 	 
 	 //강습 게시물 벌점 부여
@@ -114,7 +128,8 @@ public class ManagerController {
 		 if(service.postpenalty(vo)) { rttr.addFlashAttribute("result", "success"); }
 		 return "redirect:/manager/csboard";
 	 }
-		
+	 
+
 	
 	//강사 심사 게시판 끌고오기 (페이징처리)
 	 @GetMapping("/mgposting")
@@ -173,25 +188,70 @@ public class ManagerController {
 		 if(service.video(member)) {
 			 rttr.addFlashAttribute("result", "success"); } 
 		 return "/manager/videolink"; 
-	 
 	 }
 	 
 	
 	 //강습 게시글 삭제
-	   @PostMapping("/postdelete")
-	   public String postdelete(@RequestParam("bno") Long bno, RedirectAttributes rttr)
-	   {
-	  
-	   log.info("강습 게시글 삭제" + bno);
-	   if (service.postdelete(bno)) {
-	   rttr.addFlashAttribute("result", "success");
-	   }
-	   return "redirect:/manager/csboard";
-	   }
-	   
+	
+	 @PostMapping("/postdelete") 
+	 public String postdelete(@RequestParam("bno")
+	 Long bno, RedirectAttributes rttr) {
 	 
+	 log.info("강습 게시글 삭제" + bno); if (service.postdelete(bno)) {
+	 rttr.addFlashAttribute("result", "success"); } return
+	 "redirect:/manager/csboard"; 
+	 }
+	 
+	 //문의 게시글 삭제
+	 @PostMapping("/csdelete") 
+	 public String csdelete(@RequestParam("csbno")Long csbno, RedirectAttributes rttr) {
+	 
+	 log.info("문의 게시글 삭제" + csbno); if (service.csdelete(csbno)) {
+	 rttr.addFlashAttribute("result", "success"); } 
+	 return "redirect:/manager/csboard"; 
+	 }
 	
 	 
+	 //문의 게시글 댓글 입력
+	 @PostMapping("/csreply")
+		public String csreply(CsreplyVO reply, RedirectAttributes rttr) {
+
+			log.info(reply);
+			
+		     service.csreply(reply);
+				/* rttr.addAttribute("id", board.getCsid()); */ // getCsId() 메서드를 사용하여 id 값을 가져옴
+	    return "redirect:/manager/csdetail?csbno=" + reply.getCsbno(); // 리턴 경로 수정
+		}	 
+	 
+	 
+	 //댓글 삭제
+	 @PostMapping("/replyremove")
+	 public String replyremove(CsreplyVO reply, RedirectAttributes rttr){
+		 	log.info("댓글 삭제" + reply); 
+	
+		 	if (service.replyremove(reply)) {
+			 rttr.addFlashAttribute("result", "success"); 
+			 } 
+		 	return
+			 "redirect:/manager/csdetail?csbno=" + reply.getCsbno(); 
+	 	
+		 
+	 }
+	 
+
+	/*
+	 * @RequestMapping(method = { RequestMethod.PUT, RequestMethod.PATCH }, value =
+	 * "/{rno}", consumes = "application/json", produces = {
+	 * MediaType.TEXT_PLAIN_VALUE }) public ResponseEntity<String>
+	 * replyupdate(@RequestBody CsreplyVO vo, @PathVariable("rno") Long rno) {
+	 * vo.setRno(rno); log.info("rno : " + rno); log.info("modify : " + vo);
+	 * 
+	 * return service.replymodify(vo) == 1 ? new ResponseEntity<>("success",
+	 * HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); }
+	 */
+
+		
+	
 }
 	 
 	

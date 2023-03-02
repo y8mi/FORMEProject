@@ -19,6 +19,11 @@ public interface CsreplyMapper {
 	//Mybatis의 SQL 문장에 다수의 파라미터를 전달할 때는 전달되는 변수들에 꼭 @Param 어노테이션을 붙여줘야한다.
 	public List<CsreplyVO> getListWithPaging(@Param("cri") PagingCriteria cri, @Param("csbno") Long csbno);
 
-
+	public List<CsreplyVO> replyList(PagingCriteria cri);
+	
+	//댓글 토탈
+	public int getReplyTotal(PagingCriteria cri); 
+	
+	public int replyremove(CsreplyVO reply);
 
 }
