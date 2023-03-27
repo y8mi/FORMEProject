@@ -4,17 +4,6 @@
 
 
 
-## 개발 환경
-- Java8
-- JDK 1.8.0
-- IDE : STS 3.9
-- Framework : Spring
-- Database : Oracle DB
-- ORM : Mybatis
+<img width="80%" src="https://github.com/y8mi/FORMEProject/files/11083628/FORME.pdf"/>
 
-## 프로젝트 내 역할
-- Database Script 제작, 클래스 상세 보기(CRUD), 위시리스트/수강신청, 메인CSS
 
-## 구현 기능
-- API (메일 발송, 카카오맵 , 다음우편번서비스)
-- 계정 전환 (수강생 <-> 강사) 을 통해 강의 등록, 수강 신청/위시리스트 
