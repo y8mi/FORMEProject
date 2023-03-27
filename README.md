@@ -5,6 +5,6 @@
 
 
 <div>
-<img src="https://github.com/y8mi/FORMEProject/files/11083663/FORME_pg1.pdf" width="90%"></img>
+<img src="https://user-images.githubusercontent.com/114934300/228087708-e20b4e5e-b0bf-44d7-87ec-8e74e97f9b1c.jpg" width="90%"></img>
 </div>
 
