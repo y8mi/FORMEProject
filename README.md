@@ -4,6 +4,6 @@
 
 
 
-<img width="80%" src="https://github.com/y8mi/FORMEProject/files/11083628/FORME.pdf"/>
+[FORME 프로젝트.pdf](https://github.com/y8mi/FORMEProject/files/11083628/FORME.pdf)
 
 
