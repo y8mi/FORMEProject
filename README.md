@@ -4,5 +4,7 @@
 
 
 
+<div>
 <img src="https://github.com/y8mi/FORMEProject/files/11083663/FORME_pg1.pdf" width="90%"></img>
+</div>
 
