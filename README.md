@@ -3,6 +3,13 @@
 원데이 클래스 웹사이트입니다. (MVC2 패턴)
 
 
+・ 개발환경
+・ Frontend : HTML, CSS, JS(ES6)
+・ Backend : Java, Spring, Mybatis
+・ DB : Oracle
+・ IDE: STS, VSC
+
+
 
 
 
