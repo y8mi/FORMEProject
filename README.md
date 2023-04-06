@@ -3,11 +3,11 @@
 원데이 클래스 웹사이트입니다. (MVC2 패턴)
 
 
-###・ 개발환경 /br
-・ Frontend : HTML, CSS, JS(ES6) /br
-・ Backend : Java, Spring, Mybatis /br
-・ DB : Oracle /br
-・ IDE: STS, VSC
+###개발환경
+- Frontend : HTML, CSS, JS
+- Backend : Java, Spring, Mybatis
+- DB : Oracle
+- IDE : STS, VSC
 
 
 
