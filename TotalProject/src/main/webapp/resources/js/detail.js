@@ -253,6 +253,7 @@
 
     //주소를 가져옵니다.
     var address = document.getElementById("map_address").value;
+    
     // 주소로 좌표를 검색합니다
     geocoder.addressSearch(address, function(result, status) {
 

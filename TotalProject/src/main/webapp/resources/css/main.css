@@ -298,7 +298,7 @@
   /*유튜브 동영상*/
   .yt_container {
     width: 100%;
-    height: auto;
+    height: 570px;
     background-color: lightblue; /*수정필요*/
   }
   .ytle{

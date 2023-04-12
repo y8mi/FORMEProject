@@ -38,6 +38,8 @@
 			<file-size-threshold>20971520</file-size-threshold><!-- 20MB -->
 			
 	</multipart-config>
+	
+	
 		
 
 	<!--  한글 깨짐 방지 -->

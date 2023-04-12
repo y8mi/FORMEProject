@@ -332,26 +332,26 @@
 		                            <li>예약 금액   <div class = price><c:out value ="${posting.price }"/>원</div></li>
 		                            <li><hr></li>	                           
 		                        </ul>
-		                        
-		                        <br>
-		                        <div>
-		               						
+		             	
 							
 							  <input type="hidden" name="bno" value="${posting.bno}"/>
-		                      <li><input type="submit" class="update_btn2" value="반려" /></li>
+							  <ul>
+		                      <li><input type="submit" class="update_btn2"style ="margin-top:0;" value="반려" /></li>
+		                     
 		                  	
 		                  	<%-- 	<input type="button" value="${posting.bno }"/>
 		                  		<input type="button" value="<c:out value='${posting.bno }'/>"> --%>
 		                  	
-                      
-                      <div>
-                      		
-		                 	<input type="hidden" name="bno" value="${posting.bno}"/>
-		                 	<input type="submit" class="update_btn" value="승인" />
-		                 	</div>
-		                 	<br><br>
+                      	
+                     		<li>
+		                 	<input type="hidden" name="bno" value="${posting.bno}"/></input>
+		                 	</li>
+		                 	<li><input type="submit" class="update_btn" style ="margin-top:0;"value="승인" /></li>
+		                 	
+		                 
 		                 	<!-- <h3 style="margin-top: 130px; margin-left: 80px;">심사 내용</h3> -->
-		                 	<textarea name="con5" id="con5" style="resize: none;" placeholder="심사 코멘트를 작성해주세요."></textarea>
+		                 	<li><textarea name="con5" id="con5" style="resize: none; margin-top:20px; width:320px;" placeholder="반려 사유를 작성해주세요."></textarea></li>
+		                 	 </ul>
 					
 
 							</div>

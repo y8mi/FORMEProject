@@ -218,7 +218,7 @@
 	<select id="getVideo" resultType="org.zerock.domain.MemberVO">
 		select video 
 		from member 
-		where id = 'master'
+		where id = 'admin'
 	</select> 
 	
 	<update  id="postpenalty">

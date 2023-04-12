@@ -113,12 +113,13 @@
 									<br>
 		                        <h4 id="scrollspyHeading4"></h4>
 		                        <br><br><h4>위치</h4>
+		                        <br>
 		                            <!--지도-->
 		                           
 		                            <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=156033f4a3eb36d4ea8b4352d5412fea&libraries=services"></script>
 		                            <div id="map" style="width:500px;height:400px;"></div>
 		                            <input type="hidden" id="map_address" value="<c:out value="${posting.con4}"/>">
-
+								<br> 주소 : <c:out value ="${posting.con4 }"/>
 								<br><br>
 								
 							<!-- 리뷰 -->
@@ -126,24 +127,30 @@
 								<h4 id="scrollspyHeading5"></h4>
 								<br><br><h4>클래스 후기</h4>
 								   <p><b><%--<i class="bi bi-star-fill"></i>  ${reviewAvg.score} 점 |--%> ${reCnt.reviewCnt}개의 리뷰</b></p>  <!-- 일단보류 -->
-						   
-							   <c:forEach items="${reviewRight}" var="test">
-								   <c:if test="${member_s.id eq test.id && posting.bno eq test.bno}">
-									   
-									   <form  id ="reviewregister" action="/review/insert">
+						
+						
+								<c:set var="ReForm" value="false" />
+								<c:forEach items="${reviewRight}" var="test">
+									 <c:if test="${not ReForm}">
+										<c:if test="${member_s.id eq test.id && posting.bno eq test.bno}">
 		
-										   <fieldset>
+										<form  id ="reviewregister" >
+										<input type ="hiddenn" id ="sessionId" value ="${member_s.id}" />
+										<input type ="hiddenn" id ="sessionId" value ="${test.id}" />
+										<input type ="hiddenn" id ="sessionId" value ="${posting.bno}" />
+										<input type ="hiddenn" id ="sessionId" value ="${test.bno}" />
+										<fieldset class="reviewStarc">
 											<span class="text-bold">별점을 선택해주세요</span>
-											<input type="radio" name="reviewStar" class="reviewStar" value="5" id="rate1"><label
-												for="rate1">★</label>
-											<input type="radio" name="reviewStar" class="reviewStar" value="4" id="rate2"><label
-												for="rate2">★</label>
-											<input type="radio" name="reviewStar" class="reviewStar" value="3" id="rate3"><label
-												for="rate3">★</label>
-											<input type="radio" name="reviewStar" class="reviewStar" value="2" id="rate4"><label
-												for="rate4">★</label>
-											<input type="radio" name="reviewStar" class="reviewStar" value="1" id="rate5"><label
-												for="rate5">★</label>
+												<input type="radio" class="reviewStar" name="reviewStar" value="5" id="rate1">
+												<label for="rate1">★</label>
+												<input type="radio" class="reviewStar" name="reviewStar" value="4" id="rate2">
+												<label for="rate2">★</label>
+												<input type="radio" class="reviewStar" name="reviewStar" value="3" id="rate3">
+												<label for="rate3">★</label>
+												<input type="radio" class="reviewStar" name="reviewStar" value="2" id="rate4">
+												<label for="rate4">★</label>
+												<input type="radio" class="reviewStar" name="reviewStar" value="1" id="rate5">
+												<label for="rate5">★</label>
 										</fieldset>
 										   
 										   <textarea class="autosize" placeholder="리뷰를 작성해주세요.(제한 150자)"></textarea>
@@ -152,9 +159,16 @@
 											<button type="button" class="enroll_btn">리뷰 쓰기</button>
 										</div>		
 									   </form>
-								   </c:if>
-							   </c:forEach> 
-		
+									   
+									   <c:set var="ReForm" value="true" />
+									   </c:if>
+								  </c:if>
+							</c:forEach>
+								
+								
+								
+								
+								
 								<br>
 							   	<hr>
 						   
@@ -518,7 +532,8 @@ $(".enroll_btn").on("click", function(){
 	
 	var rbno = "${posting.bno}";
 	var rid = "${member_s.id}";
-	var rscore = $(".reviewStar").val();
+	var rscore = $('input[type=radio][name=reviewStar]:checked').val();
+	/* alert(rscore); */
 	var rcontent = $(".autosize").val();
 
 	var data = {
